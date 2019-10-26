@@ -15,31 +15,32 @@ long previousMillis = 0;
 int outputOscilatorState = LOW;
 long interval = 1000;
 
-// the setup function runs once when you press reset or power the board
+// setup se ejecuta una única vez al inicio
 void setup()
 {
-  pinMode(outputOscilatingPin, OUTPUT);                                         // configurar el PIN digital de salida.
-  pinMode(LED_BUILTIN, OUTPUT);                                                 // configurar el PIN que tiene el LED como salida.
-  pinMode(interruptPin, INPUT_PULLUP);                                          //configurar el PIN que será la entrada de interrupción
+  pinMode(outputOscilatingPin, OUTPUT);                // configurar el PIN digital de salida.
+  pinMode(LED_BUILTIN, OUTPUT);                        // configurar el PIN que tiene el LED como salida.
+  pinMode(interruptPin, INPUT_PULLUP);                 //configurar el PIN que será la entrada de interrupción
   attachInterrupt(digitalPinToInterrupt(interruptPin), changeLedState, CHANGE); //Definir ISR y el tipo de evento en la interrupción
 }
 
-// ISR lo más corto posible
+// ISR lo más breve posible, evitar uso de digitalWrite en el ISR
 void changeLedState()
 {
   state = digitalRead(outputOscilatingPin);
 }
 
-// the loop function runs over and over again forever
+// loop se ejecuta indefinidamente
 void loop()
 {
   digitalWrite(LED_BUILTIN, state);
   if (millis() - previousMillis > interval)
   {
-    // save the last time you blinked the LED previousMillis = millis();
+    // guardar el último momento en que se cambió el estado del oscilador
     previousMillis = millis();
-    // if the LED is off turn it on and vice versa: if (ledState == LOW)
+    // cambiar el estado del oscilador
     outputOscilatorState = !outputOscilatorState;
+    // propagar el estado al pin del oscilador
     digitalWrite(outputOscilatingPin, outputOscilatorState);
   }
 }
