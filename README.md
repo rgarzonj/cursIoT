@@ -1,11 +1,9 @@
 # Curso de desarrollo de soluciones IoT
-Repository for the course IoT Development
+Repositorio con las soluciones a las PEC.
 
 ## PEC 4 Dispositivos electrónicos para IoT
 
 ### Actividad 1
-
-Ficheros con las soluciones
 
 - [Blink](PEC4/Actividad_1/Blink/Blink.ino)
 - [Blink with millis](PEC4/Actividad_1/Blink_with_millis/Blink_with_millis.ino)
@@ -16,14 +14,10 @@ Ficheros con las soluciones
  
 ## PEC 5 Tecnologías y protocolos de comunicación para IoT
 
-
-### Actividad 1
+### Actividad 3
 
 Ficheros con las soluciones
 
-- Blink/Blink.ino
-- Blink_with_millis/Blink_with_millis.ino
-- Interruptions/Interruptions.ino
+- [EchoProtocolTCPServer](PEC4/Actividad_3/EchoProtocolTCPServer.py)
 
-
-### Actividad 2
+### Actividad 4
