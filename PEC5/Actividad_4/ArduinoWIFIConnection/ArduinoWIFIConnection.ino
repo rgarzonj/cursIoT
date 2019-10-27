@@ -63,7 +63,7 @@ void loop()
     data = Serial.read();
     if (data == 'P')
     {
-      Serial.print('Received command P=PRINT WIFI STATUS from Serial.');
+      Serial.println("Received command P=PRINT WIFI STATUS from Serial.");
       printWiFiStatus();
     }
   }

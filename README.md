@@ -16,8 +16,11 @@ Repositorio con las soluciones a las PEC.
 
 ### Actividad 3
 
-Ficheros con las soluciones
-
-- [EchoProtocolTCPServer](PEC4/Actividad_3/EchoProtocolTCPServer.py)
+- [EchoProtocolTCPServer](PEC5/Actividad_3/EchoProtocolTCPServer.py)
 
 ### Actividad 4
+
+NOTE: The following Sketch files require a file arduino_secrets.h
+
+- [ArduinoWIFIConnection](PEC5/Actividad_4/ArduinoWIFIConnection/ArduinoWIFIConnection.ino) 
+- [EchoProtocolTCPServer](PEC5/Actividad_4/ArduinoEchoProtocolClient/ArduinoEchoProtocolClient.ino)
