@@ -12,7 +12,7 @@ const int outputOscilatingPin = 1;
 const int interruptPin = 4;
 byte state = LOW;
 volatile long counter = 0;
-const int TICKS_PER_SECOND = 742; //PWM frequency is 742Hz
+const int TICKS_PER_SECOND = 732; //PWM frequency is 732Hz
 // setup se ejecuta una única vez al inicio
 void setup()
 {
