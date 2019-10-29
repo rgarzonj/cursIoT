@@ -1,18 +1,43 @@
 #include <SPI.h>
-#include <WiFi.h>
+#include <WiFi101.h>
+#include "arduino_secrets.h"
+///////please enter your sensitive data in the Secret tab/arduino_secrets.h
+char ssid[] = SECRET_SSID; // your network SSID (name)
+char pass[] = SECRET_PASS; 
 
-char ssid[] = "JAZZTEL_exdV";          //  your network SSID (name)
-char pass[] = "5eyphrzqthr2";   // your network password
-
+IPAddress ECHO_SERVER_ADDRESS(192, 168, 4, 20); // Echo Protocol Server
+#define ECHO_SERVER_PORT 8888
+char data;
 int status = WL_IDLE_STATUS;
-//IPAddress server(74,125,115,105);  // Google
-IPAddress server(192,168,26,136);  // Echo Protocol Server
 
 // Initialize the client library
 WiFiClient client;
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
+  connectToWifi();
+}
+
+void loop()
+{
+  if (Serial.available() > 0)
+  {
+    data = Serial.read();
+    /*Valid commands from the serial will be:
+    W: Show Wifi status;
+    C: Connect to Echo Server;
+    R: Send request to Echo Server 
+    Q: Quit*/
+    executeCommandFromSerial(data);
+   Serial.println();
+  }
+
+  readDataFromEchoServer();
+}
+
+void connectToWifi()
+{
   // check if the WiFi module works
   if (WiFi.status() == WL_NO_SHIELD)
   {
@@ -25,6 +50,7 @@ void setup() {
   // attempt to connect to WiFi network:
   while (status != WL_CONNECTED)
   {
+    digitalWrite(LED_BUILTIN, HIGH);
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
@@ -32,57 +58,87 @@ void setup() {
 
     // wait 10 seconds for connection:
     delay(10000);
+    digitalWrite(LED_BUILTIN, LOW);
   }
 
+  // you're connected now, so print out the status:
+  printWiFiStatus();
+}
 
-
-
-  Serial.println("Attempting to connect to WPA network...");
-  Serial.print("SSID: ");
-  Serial.println(ssid);
-
-  status = WiFi.begin(ssid, pass);
-  if ( status != WL_CONNECTED) {
-    Serial.println("Couldn't get a wifi connection");
-    // don't do anything else:
-    while(true);
+void connectToEchoProtocolServer()
+{
+  if (client.connect(ECHO_SERVER_ADDRESS, ECHO_SERVER_PORT))
+  {
+    Serial.println("Connected to Echo Protocol server.");
   }
-  else {
-    Serial.println("Connected to wifi");
-    Serial.println("\nStarting connection...");
-    // if you get a connection, report back via serial:
-    if (client.connect(server, 8888)) {
-      Serial.println("connected");
-      // Make a HTTP request:
-      client.println("Hello World");
-      client.println();
-    }
+  else
+  {
+    Serial.println("Could not connect to Echo Protocol server.");
   }
 }
 
-void loop() {
-    if (client.available()) {
-    char c = client.read();
-    Serial.println('Received character from server');
-    Serial.print(c);
-  }
-
-  // if the server's disconnected, stop the client:
-  if (!client.connected()) {
-    Serial.println();
-    Serial.println("disconnecting.");
+void stopEchoServerConnection()
+{
+  if (client.connected())
+  {
     client.stop();
-
-    // do nothing forevermore:
-    for(;;)
-      ;
   }
-  delay (3000);
-    if (client.available()) {
-  client.println("Hello World");
-    }
+}
+void sendEchoRequest()
+{
+  if (client.connected())
+  {
+    Serial.println("Sending message HELLO ARDUINO HERE ");
+    client.print("HELLO ARDUINO HERE");
+  }
+  else
+  {
+    Serial.println("ERROR: Cannot send Echo request.");
+  }
 }
 
+void readDataFromEchoServer()
+{
+  if (client.available())
+  {
+    char c = client.read();
+    Serial.print("Received character from server: ");
+    Serial.println(c);
+  }
+}
+
+void executeCommandFromSerial(char data)
+{
+  switch (data)
+  {
+  case 'C':
+    //C: Connect to Echo Server;
+    Serial.println("Received command C=Connect to Echo protocol server.");
+    connectToEchoProtocolServer();
+    break;
+  case 'R':
+    //R: Send request to Echo server;
+    Serial.println("Received command R=Create new Echo request.");
+    sendEchoRequest();
+    break;
+  case 'W':
+    //W: Show Wifi status;
+    Serial.println("Received command W=Print WIFI status.");
+    printWiFiStatus();
+    break;
+  case 'Q':
+    //Q: Quit*/
+    Serial.println("Received command Q=Quit.");
+    // do nothing forevermore:
+    stopEchoServerConnection();
+    for (;;)
+      ;
+    break;
+  default:
+  {
+  }
+  }
+}
 
 void printWiFiStatus()
 {

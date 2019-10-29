@@ -1,3 +1,6 @@
+''' Implements Echo protocol server
+'''
+
 import asyncio
 
 
@@ -25,7 +28,7 @@ async def main():
 
     server = await loop.create_server(
         lambda: EchoServerProtocol(),
-        '127.0.0.1', 8888)
+        '', 8888)
 
     async with server:
         await server.serve_forever()
