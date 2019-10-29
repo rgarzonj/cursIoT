@@ -8,6 +8,7 @@ Repositorio con las soluciones a las PEC.
 - [Blink](PEC4/Actividad_1/Blink/Blink.ino)
 - [Blink with millis](PEC4/Actividad_1/Blink_with_millis/Blink_with_millis.ino)
 - [Interruptions](PEC4/Actividad_1/Interruptions/Interruptions.ino)
+- [Interruptions using PWM](PEC4/Actividad_1/Interruptions_with_PWM/Interruptions_with_PWM.ino)
 
 ### Actividad 2
 - [Rasberry y Arduino USB](PEC4/Actividad_2/RaspberryPI_Arduino_USB/RaspberryPI_Arduino_USB.ino)
@@ -20,7 +21,7 @@ Repositorio con las soluciones a las PEC.
 
 ### Actividad 4
 
-NOTE: The following Sketch files require a file arduino_secrets.h
+NOTE: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h
 
 - [ArduinoWIFIConnection](PEC5/Actividad_4/ArduinoWIFIConnection/ArduinoWIFIConnection.ino) 
 - [EchoProtocolTCPServer](PEC5/Actividad_4/ArduinoEchoProtocolClient/ArduinoEchoProtocolClient.ino)

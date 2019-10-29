@@ -12,14 +12,14 @@ const int outputOscilatingPin = 1;
 const int interruptPin = 4;
 byte state = LOW;
 volatile long counter = 0;
-const int TICKS_PER_SECOND = 1000;
+const int TICKS_PER_SECOND = 742; //PWM frequency is 742Hz
 // setup se ejecuta una única vez al inicio
 void setup()
 {
   pinMode(outputOscilatingPin, OUTPUT);                // configurar el PIN digital de salida.
   pinMode(LED_BUILTIN, OUTPUT);                        // configurar el PIe N que tiene el LED como salida.
-  pinMode(interruptPin, INPUT);                 //configurar el PIN que será la entrada de interrupción
-  attachInterrupt(digitalPinToInterrupt(interruptPin), countPWMTicks, CHANGE); //Definir ISR y el tipo de evento en la interrupción
+  pinMode(interruptPin, INPUT_PULLUP);                 //configurar el PIN que será la entrada de interrupción
+  attachInterrupt(digitalPinToInterrupt(interruptPin), countPWMTicks, RISING); //Definir ISR y el tipo de evento en la interrupción
 }
 
 // ISR lo más breve posible, evitar uso de digitalWrite en el ISR
@@ -35,9 +35,7 @@ void loop()
     digitalWrite(LED_BUILTIN, state);
     if (counter>TICKS_PER_SECOND)
     {
-      state = !state;;     
-    }
-    else{
+      state = !state;
       counter = 0;
     }
 }

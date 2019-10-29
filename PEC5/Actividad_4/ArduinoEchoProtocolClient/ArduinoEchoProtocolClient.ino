@@ -32,7 +32,6 @@ void loop()
     executeCommandFromSerial(data);
     Serial.println();
   }
-
   readDataFromEchoServer();
 }
 
