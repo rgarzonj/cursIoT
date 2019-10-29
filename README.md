@@ -24,3 +24,15 @@ NOTE: The following Sketch files require a file arduino_secrets.h
 
 - [ArduinoWIFIConnection](PEC5/Actividad_4/ArduinoWIFIConnection/ArduinoWIFIConnection.ino) 
 - [EchoProtocolTCPServer](PEC5/Actividad_4/ArduinoEchoProtocolClient/ArduinoEchoProtocolClient.ino)
+
+ 
+## PEC 6 Programación de dispositivos electrónicos para IoT
+
+
+### Actividad 1
+
+### Actividad 2
+
+
+### Actividad 3
+

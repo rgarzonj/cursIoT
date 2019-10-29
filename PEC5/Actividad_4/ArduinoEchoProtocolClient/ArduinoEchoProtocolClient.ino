@@ -3,7 +3,7 @@
 #include "arduino_secrets.h"
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
 char ssid[] = SECRET_SSID; // your network SSID (name)
-char pass[] = SECRET_PASS; 
+char pass[] = SECRET_PASS;
 
 IPAddress ECHO_SERVER_ADDRESS(192, 168, 4, 20); // Echo Protocol Server
 #define ECHO_SERVER_PORT 8888
@@ -30,7 +30,7 @@ void loop()
     R: Send request to Echo Server 
     Q: Quit*/
     executeCommandFromSerial(data);
-   Serial.println();
+    Serial.println();
   }
 
   readDataFromEchoServer();
