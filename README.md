@@ -31,15 +31,22 @@ NOTE: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h
 
 ### Actividades preliminares
 
-- [ReadSensors](PEC6/Actividad_1/ReadSensors/ReadSensors.ino) 
+- [ReadSensors](PEC6/Activity_1/ReadSensors/ReadSensors.ino) 
 
 ### Actividad 1
 
-- [ReadSensorsAndWriteToSD](PEC6/Actividad_1/ReadSensorsWriteSD/ReadSensorsWriteSD.ino) 
+- [ReadSensorsAndWriteToSD](PEC6/Activity_1/ReadSensorsWriteSD/ReadSensorsWriteSD.ino) 
 
 ### Actividad 2
 
-- [SendDataWithMQTT](PEC6/Actividad_1/SendDataWithMQTT/SendDataWithMQTT.ino) 
-- [Helper to manage MQTT formatting (.cpp)](PEC6/Actividad_1/SendDataWithMQTT/MQTT_Homie_Device_Helper.cpp) 
-- [Helper to manage MQTT formatting (.h)](PEC6/Actividad_1/SendDataWithMQTT/MQTT_Homie_Device_Helper.h) 
+NOTA: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h que debe contener
+`#define SECRET_SSID "" // SSID Wifi
+#define SECRET_PASS "" // Contraseña Wifi
+
+#define MQTT_BROKER_USER ""
+#define MQTT_BROKER_PASSWORD ""``
+
+- [SendDataWithMQTT](PEC6/Activity_2/SendDataWithMQTT/SendDataWithMQTT.ino) 
+- [Helper to manage MQTT formatting (.cpp)](PEC6/Activity_2/SendDataWithMQTT/MQTT_Homie_Device_Helper.cpp) 
+- [Helper to manage MQTT formatting (.h)](PEC6/Activity_2/SendDataWithMQTT/MQTT_Homie_Device_Helper.h) 
 
