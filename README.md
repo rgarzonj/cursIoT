@@ -29,11 +29,17 @@ NOTE: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h
  
 ## PEC 6 Programación de dispositivos electrónicos para IoT
 
+### Actividades preliminares
+
+- [ReadSensors](PEC6/Actividad_1/ReadSensors/ReadSensors.ino) 
 
 ### Actividad 1
 
+- [ReadSensorsAndWriteToSD](PEC6/Actividad_1/ReadSensorsWriteSD/ReadSensorsWriteSD.ino) 
+
 ### Actividad 2
 
-
-### Actividad 3
+- [SendDataWithMQTT](PEC6/Actividad_1/SendDataWithMQTT/SendDataWithMQTT.ino) 
+- [Helper to manage MQTT formatting (.cpp)](PEC6/Actividad_1/SendDataWithMQTT/MQTT_Homie_Device_Helper.cpp) 
+- [Helper to manage MQTT formatting (.h)](PEC6/Actividad_1/SendDataWithMQTT/MQTT_Homie_Device_Helper.h) 
 
