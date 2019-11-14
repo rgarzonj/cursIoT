@@ -6,9 +6,11 @@ class MQTT_Homie_Device_Helper
 
 public:
     String deviceIdentifier;
+    String brokerUser;
+    String brokerPassword;
     PubSubClient client;
 
-    MQTT_Homie_Device_Helper(String devID);
+    MQTT_Homie_Device_Helper(String devID,String user,String password);
     void setClient(PubSubClient PSclient);
 
     void sendProperty(String node_prefix, String propertyName, String datatype, String unit, String payload);

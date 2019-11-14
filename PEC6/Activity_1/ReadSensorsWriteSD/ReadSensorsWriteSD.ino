@@ -16,6 +16,7 @@ anterior la capacidad de registrar las lecturas de un día en la flash e ir bor
 */
 
 #include <Arduino_MKRENV.h>
+#include <SD.h>
 
 void setup() {
   Serial.begin(9600);
@@ -33,16 +34,17 @@ void loop() {
   float temperature = ENV.readTemperature();
   float humidity    = ENV.readHumidity();
   float pressure    = ENV.readPressure();
-  float illuminance = ENV.readIlluminance();
+//  float illuminance = ENV.readIlluminance();
   float uva         = ENV.readUVA();
   float uvb         = ENV.readUVB();
   float uvIndex     = ENV.readUVIndex();
+  String dataString = "";
 
   // print each of the sensor values
   Serial.print("Temperature = ");
   Serial.print(temperature);
   Serial.println(" °C");
-
+  dataString += String();
   Serial.print("Humidity    = ");
   Serial.print(humidity);
   Serial.println(" %");

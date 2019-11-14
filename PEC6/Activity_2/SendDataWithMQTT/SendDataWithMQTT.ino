@@ -1,43 +1,28 @@
 /*
- Basic ESP8266 MQTT example
- This sketch demonstrates the capabilities of the pubsub library in combination
- with the ESP8266 board/library.
- It connects to an MQTT server then:
-  - publishes "hello world" to the topic "outTopic" every two seconds
-  - subscribes to the topic "inTopic", printing out any messages
-    it receives. NB - it assumes the received payloads are strings not binary
-  - If the first character of the topic "inTopic" is an 1, switch ON the ESP Led,
-    else switch it off
- It will reconnect to the server if the connection is lost using a blocking
- reconnect function. See the 'mqtt_reconnect_nonblocking' example for how to
- achieve the same result without blocking the main loop.
- To install the ESP8266 board, (using Arduino 1.6.4+):
-  - Add the following 3rd party board manager under "File -> Preferences -> Additional Boards Manager URLs":
-       http://arduino.esp8266.com/stable/package_esp8266com_index.json
-  - Open the "Tools -> Board -> Board Manager" and click install for the ESP8266"
-  - Select your ESP8266 in "Tools -> Board"
+PLA 6
+Actividad 2
+
+Enviar los datos leídos al servidor MQTT cumpliendo la convención “Homie” referenciada en
+el PLA 5.
+○ Explica que “topics” has usado y por qué.
+○ Muestra con el comando “mosquitto_sub” cómo te has suscrito a los datos que
+estabas mandado. Muestra cómo usas los comodines para suscripción y explica por qué usas esos comodines.
 */
 
-/*
-Temperature = 26.07 °C
-Humidity    = 43.70 %
-Pressure    = 96.84 kPa
-Illuminance = 30.65 lx
-UVA         = 0.00
-UVB         = 0.00
-UV Index    = 0.00
-*/
 #include <Arduino_MKRENV.h>
 #include <WiFi101.h>
 #include <PubSubClient.h>
 #include "MQTT_Homie_Device_Helper.h"
 
 // Update these with values suitable for your network.
-
 #include "arduino_secrets.h"
+
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
 char ssid[] = SECRET_SSID; // your network SSID (name)
 char pass[] = SECRET_PASS; // your network password (use for WPA, or use as key for WEP)
+
+char mqtt_broker_user[] = MQTT_BROKER_USER;
+char mqtt_broker_password[] = MQTT_BROKER_PASSWORD;
 
 const char *mqtt_server = "192.168.26.135";
 
@@ -46,9 +31,9 @@ PubSubClient client(espClient);
 long lastMsg = 0;
 char msg[50];
 int value = 0;
-const char *DEVICE_IDENTIFIER = "mkrenv";
+const char *DEVICE_IDENTIFIER = "mkrenv1";
 
-MQTT_Homie_Device_Helper mqtt_helper(DEVICE_IDENTIFIER);
+MQTT_Homie_Device_Helper mqtt_helper(DEVICE_IDENTIFIER,mqtt_broker_user,mqtt_broker_password);
 
 void setup_wifi()
 {
@@ -130,8 +115,12 @@ void reconnect()
 
 void registerDeviceAndNodes()
 {
-  mqtt_helper.registerDevice(DEVICE_IDENTIFIER, "MKRENV Ruben Garzon", "pressure,temperature,humidity,ambiancelight,ultraviolet");
+  mqtt_helper.registerDevice(DEVICE_IDENTIFIER, "MKRENV Ruben Garzon", "pressure,termosthat,humidity,uv-sensor");
+
   mqtt_helper.registerNode(String("homie/" + String(DEVICE_IDENTIFIER) + "/"), "pressure", "Pressure sensor", "pressure");
+  mqtt_helper.registerNode(String("homie/" + String(DEVICE_IDENTIFIER) + "/"), "termosthat", "Temperature sensor", "temperature");
+  mqtt_helper.registerNode(String("homie/" + String(DEVICE_IDENTIFIER) + "/"), "humidity", "Humidity sensor", "humidity");
+  mqtt_helper.registerNode(String("homie/" + String(DEVICE_IDENTIFIER) + "/"), "uv-sensor", "UV sensor", "uv-index,ultraviolet-a,ultraviolet-b");
 }
 
 void setup()
@@ -163,7 +152,7 @@ void readSensors()
   float temperature = ENV.readTemperature();
   float humidity = ENV.readHumidity();
   float pressure = ENV.readPressure();
-  float illuminance = ENV.readIlluminance();
+//  float illuminance = ENV.readIlluminance();
   float uva = ENV.readUVA();
   float uvb = ENV.readUVB();
   float uvIndex = ENV.readUVIndex();
@@ -172,28 +161,33 @@ void readSensors()
   Serial.print("Temperature = ");
   Serial.print(temperature);
   Serial.println(" °C");
+  mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/thermostat/"), "humidity", "float", "°C", String(temperature));
 
   Serial.print("Humidity    = ");
   Serial.print(humidity);
   Serial.println(" %");
+  mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/humidity/"), "humidity", "float", "%", String(humidity));
 
   Serial.print("Pressure    = ");
   Serial.print(pressure);
   Serial.println(" hPa");
   mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/pressure/"), "pressure", "float", "kPa", String(pressure));
 
-  Serial.print("Illuminance = ");
-  Serial.print(illuminance);
-  Serial.println(" lx");
-
   Serial.print("UVA         = ");
-  Serial.println(uva);
-
+  Serial.print(uva);
+  Serial.println(" μW/cm2");
+  mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/uv-sensor/"), "ultraviolet-a", "float", "μW/cm2", String(uva));
+  
   Serial.print("UVB         = ");
-  Serial.println(uvb);
+  Serial.print(uvb);
+  Serial.println(" μW/cm2");
+ 
+  mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/uv-sensor/"), "ultraviolet-b", "float", "μW/cm2", String(uvb));
 
   Serial.print("UV Index    = ");
-  Serial.println(uvIndex);
+  Serial.print(uvIndex);
+  Serial.println(" (abs index 0 to 11)");
+  mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/uv-sensor/"), "uv-index", "float", "#", String(uvIndex));
 
   // print an empty line
   Serial.println();
