@@ -9,6 +9,7 @@ public:
     String brokerUser;
     String brokerPassword;
     PubSubClient client;
+    bool deviceRegistered;
 
     MQTT_Homie_Device_Helper(String devID,String user,String password);
     void setClient(PubSubClient PSclient);
@@ -16,6 +17,8 @@ public:
     void sendProperty(String node_prefix, String propertyName, String datatype, String unit, String payload);
     void registerNode(String device_prefix, String nodeName, String type, String properties);
     void registerDevice(String device_name, String friendlyDeviceName, String nodesList);
+    void disconnectDevice(String device_name);
+    void sendLastWillMessage(String device_name);
 };
 
 #endif

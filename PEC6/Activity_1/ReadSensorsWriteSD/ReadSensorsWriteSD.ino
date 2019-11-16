@@ -19,7 +19,10 @@ anterior la capacidad de registrar las lecturas de un día en la flash e ir bor
 #include <SD.h>
 
 unsigned long currentFilePosition;
-const MAX_FILE_POSITIONS = 20000;
+const int MAX_FILE_POSITIONS = 10000;
+const int chipSelect = 4;
+char data;
+unsigned long time;
 
 void initializeSDCard()
 {
@@ -39,11 +42,11 @@ void initializeSDCard()
 /* Deletes the old data in the file by using a temporary file*/
 void deleteOldData()
 {
-  Serial.println("Removing old data in the file");
+  Serial.println("Removing oldest data in the file.");
   //Create a new temp file
-  firstPositionToRead = round(MAX_POSITIONS / 2);
+  int firstPositionToRead = round(MAX_FILE_POSITIONS / 2);
   File dataFile = SD.open("datalog.txt", FILE_WRITE);
-  File tempFile 0 SD.open("templog.txt", FILE_WRITE);
+  File tempFile = SD.open("templog.txt", FILE_WRITE);
   // if the file is available, write to it:
   if (dataFile)
   {
@@ -60,17 +63,17 @@ void deleteOldData()
     }
     else
     {
-      Serial.println("ERROR: Could not read existing file.")
+      Serial.println("ERROR: Could not read existing file.");
     }
   }
   else
   {
-    Serial.println("ERROR: Could not write temporary file.")
+    Serial.println("ERROR: Could not write temporary file.");
   }
   //
   SD.remove("datalog.txt");
-  File dataFile = SD.open("datalog.txt", FILE_WRITE);
-  File tempFile 0 SD.open("templog.txt", FILE_WRITE);
+  dataFile = SD.open("datalog.txt", FILE_WRITE);
+  tempFile = SD.open("templog.txt", FILE_WRITE);
   while (dataFile.available())
   {
     data = tempFile.read();
@@ -79,6 +82,7 @@ void deleteOldData()
   dataFile.close();
   tempFile.close();
   SD.remove("templog.txt");
+  Serial.println("Oldest data was removed from the datalog file.");
 }
 
 /*Write the passed string to the SD Card*/
@@ -90,9 +94,11 @@ void writeToSDCard(String dataString)
   // if the file is available, write to it:
   if (dataFile)
   {
-    Serial.print("Writing data to SD Card");
+    Serial.println();
+    Serial.println("Writing data to SD Card");
+    Serial.println();
     dataFile.print(dataString);
-    if (dataFile.position() > MAX_POSITIONS)
+    if (dataFile.position() > MAX_FILE_POSITIONS)
     {
       dataFile.close();
       deleteOldData();
@@ -113,6 +119,7 @@ void writeToSDCard(String dataString)
 
 void setup()
 {
+  delay(3000);
   Serial.begin(9600);
   while (!Serial)
     ;
@@ -132,51 +139,58 @@ void loop()
   float temperature = ENV.readTemperature();
   float humidity = ENV.readHumidity();
   float pressure = ENV.readPressure();
-  //  float illuminance = ENV.readIlluminance();
+  float illuminance = ENV.readIlluminance();
   float uva = ENV.readUVA();
   float uvb = ENV.readUVB();
   float uvIndex = ENV.readUVIndex();
   String dataString = "";
+
+  Serial.print("Time: ");
+  time = millis();
+  Serial.println(String(time));
+  Serial.println();
+
+  dataString += String("Time: " + String(time) + "\n");
 
   // print each of the sensor values
   Serial.print("Temperature = ");
   Serial.print(temperature);
   Serial.println(" °C");
 
-  dataString += String("Temperature = " + temperature + " °C\n");
+  dataString += String("Temperature = " + String(temperature) + " °C\n");
 
   Serial.print("Humidity    = ");
   Serial.print(humidity);
   Serial.println(" %");
 
-  dataString += String("Humidity = " + humidity + " %\n");
+  dataString += String("Humidity = " + String(humidity) + " %\n");
 
   Serial.print("Pressure    = ");
   Serial.print(pressure);
   Serial.println(" hPa");
 
-  dataString += String("Pressure = " + pressure + " hPa\n");
+  dataString += String("Pressure = " + String(pressure) + " hPa\n");
 
   Serial.print("Illuminance = ");
   Serial.print(illuminance);
   Serial.println(" lx");
 
-  dataString += String("Illuminance = " + illuminance + " lx\n");
+  dataString += String("Illuminance = " + String(illuminance) + " lx\n");
 
   Serial.print("UVA         = ");
   Serial.println(uva);
 
-  dataString += String("UVA = " + uva + " \n");
+  dataString += String("UVA = " + String(uva) + " \n");
 
   Serial.print("UVB         = ");
   Serial.println(uvb);
 
-  dataString += String("UVB = " + uvb + " \n");
+  dataString += String("UVB = " + String(uvb) + " \n");
 
   Serial.print("UV Index    = ");
   Serial.println(uvIndex);
 
-  dataString += String("UV Index = " + uvIndex + " \n");
+  dataString += String("UV Index = " + String(uvIndex) + " \n");
 
   writeToSDCard(dataString);
 
@@ -184,6 +198,6 @@ void loop()
   Serial.println();
 
   // wait 2 seconds to print again
-  delay(2000);
+  delay(1000);
 }
 

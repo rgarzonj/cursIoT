@@ -32,8 +32,9 @@ long lastMsg = 0;
 char msg[50];
 int value = 0;
 const char *DEVICE_IDENTIFIER = "mkrenv1";
+char data;
 
-MQTT_Homie_Device_Helper mqtt_helper(DEVICE_IDENTIFIER,mqtt_broker_user,mqtt_broker_password);
+MQTT_Homie_Device_Helper mqtt_helper(DEVICE_IDENTIFIER, mqtt_broker_user, mqtt_broker_password);
 
 void setup_wifi()
 {
@@ -152,7 +153,7 @@ void readSensors()
   float temperature = ENV.readTemperature();
   float humidity = ENV.readHumidity();
   float pressure = ENV.readPressure();
-//  float illuminance = ENV.readIlluminance();
+  //  float illuminance = ENV.readIlluminance();
   float uva = ENV.readUVA();
   float uvb = ENV.readUVB();
   float uvIndex = ENV.readUVIndex();
@@ -177,11 +178,11 @@ void readSensors()
   Serial.print(uva);
   Serial.println(" μW/cm2");
   mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/uv-sensor/"), "ultraviolet-a", "float", "μW/cm2", String(uva));
-  
+
   Serial.print("UVB         = ");
   Serial.print(uvb);
   Serial.println(" μW/cm2");
- 
+
   mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/uv-sensor/"), "ultraviolet-b", "float", "μW/cm2", String(uvb));
 
   Serial.print("UV Index    = ");
@@ -200,6 +201,25 @@ void loop()
   //}
   readSensors();
   client.loop();
+
+  if (Serial.available() > 0)
+  {
+    data = Serial.read();
+    if (data == 'D') //Disconnect
+    {
+      mqtt_helper.disconnectDevice(DEVICE_IDENTIFIER);
+    }
+
+    if (data == 'C') //Connect, register device and nodes
+    {
+      registerDeviceAndNodes();
+    }
+
+    if (data == 'B') //Badly disconnected device
+    {
+      mqtt_helper.sendLastWillMessage(DEVICE_IDENTIFIER);
+    }
+  }
   /* 
   long now = millis();
   if (now - lastMsg > 2000) {

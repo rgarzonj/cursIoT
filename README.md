@@ -40,6 +40,7 @@ NOTE: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h
 ### Actividad 2
 
 NOTA: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h que debe contener
+
 `#define SECRET_SSID "" // SSID Wifi
 #define SECRET_PASS "" // Contraseña Wifi
 
