@@ -24,7 +24,8 @@ char pass[] = SECRET_PASS; // your network password (use for WPA, or use as key 
 char mqtt_broker_user[] = MQTT_BROKER_USER;
 char mqtt_broker_password[] = MQTT_BROKER_PASSWORD;
 
-const char *mqtt_server = "192.168.26.135";
+//const char *mqtt_server = "192.168.26.135";
+const char *mqtt_server = "192.168.43.186";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -127,7 +128,7 @@ void registerDeviceAndNodes()
 void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT); // Initialize the BUILTIN_LED pin as an output
-  Serial.begin(115200);
+  Serial.begin(9600);
   // Setup MKRENV Shield
   if (!ENV.begin())
   {
@@ -162,7 +163,7 @@ void readSensors()
   Serial.print("Temperature = ");
   Serial.print(temperature);
   Serial.println(" °C");
-  mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/thermostat/"), "humidity", "float", "°C", String(temperature));
+  mqtt_helper.sendProperty(String("homie/" + String(DEVICE_IDENTIFIER) + "/thermostat/"), "temperature", "float", "°C", String(temperature));
 
   Serial.print("Humidity    = ");
   Serial.print(humidity);
@@ -196,38 +197,30 @@ void readSensors()
 void loop()
 {
   delay(2000);
-  //  if (!client.connected()) {
-  //    reconnect();
-  //}
+
   readSensors();
+
   client.loop();
 
-  if (Serial.available() > 0)
-  {
-    data = Serial.read();
-    if (data == 'D') //Disconnect
-    {
-      mqtt_helper.disconnectDevice(DEVICE_IDENTIFIER);
-    }
+  delay(2000);
 
-    if (data == 'C') //Connect, register device and nodes
-    {
-      registerDeviceAndNodes();
-    }
+  Serial.println('Received command to simulate BADLY DISCONNECTED device');
+  mqtt_helper.sendLastWillMessage(DEVICE_IDENTIFIER);
 
-    if (data == 'B') //Badly disconnected device
-    {
-      mqtt_helper.sendLastWillMessage(DEVICE_IDENTIFIER);
-    }
-  }
-  /* 
-  long now = millis();
-  if (now - lastMsg > 2000) {
-    lastMsg = now;
-    ++value;
-    snprintf (msg, 50, "hello world #%ld", value);
-    Serial.print("Publish message: ");
-    Serial.println(msg);
-    client.publish("outTopic", msg);
-  }*/
+  delay(2000);
+
+  Serial.println('Received CONNECT command');
+  registerDeviceAndNodes();
+
+  delay (2000);
+
+  Serial.println('Received DISCONNECT command');
+  mqtt_helper.disconnectDevice(DEVICE_IDENTIFIER);
+
+  delay(2000);
+
+  Serial.println('Received CONNECT command');
+  registerDeviceAndNodes();
+
 }
+

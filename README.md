@@ -39,15 +39,17 @@ NOTE: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h
 
 ### Actividad 2
 
-NOTA: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h que debe contener
+NOTA: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h que debe contener las define siguientes
 
-`#define SECRET_SSID "" // SSID Wifi
-#define SECRET_PASS "" // Contraseña Wifi
+#define SECRET_SSID "" // SSID Wifi 
 
-#define MQTT_BROKER_USER ""
-#define MQTT_BROKER_PASSWORD ""``
+#define SECRET_PASS "" // Contraseña Wifi 
+
+#define MQTT_BROKER_USER "" 
+
+#define MQTT_BROKER_PASSWORD ""
 
 - [SendDataWithMQTT](PEC6/Activity_2/SendDataWithMQTT/SendDataWithMQTT.ino) 
-- [Helper to manage MQTT formatting (.cpp)](PEC6/Activity_2/SendDataWithMQTT/MQTT_Homie_Device_Helper.cpp) 
-- [Helper to manage MQTT formatting (.h)](PEC6/Activity_2/SendDataWithMQTT/MQTT_Homie_Device_Helper.h) 
+- [Helper to manage MQTT Homie formatting (.cpp)](PEC6/Activity_2/SendDataWithMQTT/MQTT_Homie_Device_Helper.cpp) 
+- [Helper to manage MQTT Homie formatting (.h)](PEC6/Activity_2/SendDataWithMQTT/MQTT_Homie_Device_Helper.h) 
 
