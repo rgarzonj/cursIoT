@@ -58,6 +58,6 @@ NOTA: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h que
 ### Actividad 1
 
 - [MKR_Relay_test](PEC8/Actividad_1/MKR_RELAY_test/MKR_RELAY_test.ino) 
-- [MKR_RELAY_Web_Page](PEC8/Actividad_1/MKR_RELAY_Web_Page/MKR_RELAY_Web_Pageino) 
+- [MKR_RELAY_Web_Page](PEC8/Actividad_1/MKR_RELAY_Web_Page/MKR_RELAY_Web_Page.ino) 
 
 
