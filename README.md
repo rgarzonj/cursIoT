@@ -29,10 +29,6 @@ NOTE: Los siguientes ficheros Sketch requieren del fichero arduino_secrets.h
  
 ## PEC 6 Programación de dispositivos electrónicos para IoT
 
-### Actividades preliminares
-
-- [ReadSensors](PEC6/Activity_1/ReadSensors/ReadSensors.ino) 
-
 ### Actividad 1
 
 - [ReadSensorsAndWriteToSD](PEC6/Activity_1/ReadSensorsWriteSD/ReadSensorsWriteSD.ino) 

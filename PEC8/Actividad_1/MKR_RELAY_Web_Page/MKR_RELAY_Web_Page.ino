@@ -157,7 +157,7 @@ void loop()
   {
     lastMsg = now;
     ++value;
-    Serial.print("Arduino waiting for MQTT message: ");
+    Serial.println("Arduino waiting for MQTT message: ");
     //snprintf (msg, MSG_BUFFER_SIZE, "hello world #%ld", value);
     //Serial.print("Publish message: ");
     //Serial.println(msg);
